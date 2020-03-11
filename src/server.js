@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const product = require('../app/models/product');
+const mongoose = require('mongoose');
 
 const app = express();
+
+// Persistência
+mongoose.connect('mongodb://localhost/bdCrud', {useNewUrlParser:true});
 
 // Configurar a aplicação para usar o Body-Parser
 app.use(bodyParser.urlencoded([{extended:true}]));
@@ -11,7 +14,17 @@ app.use(bodyParser.json());
 // Porta da aplicação
 const PORT = process.env.port || 3000;
 
-// Definindo as rotas
+// Rotas
+var productRoute = require('./routes/product-routes');
+var indexRoute = require('./routes/index-routes');
+
+// Rotas para Produtos
+app.use('/api/products', productRoute);
+
+// Rota para Index
+app.use('/api', indexRoute);
+
+/*// Definindo as rotas
 const router = express.Router(); // Interceptar todas as rotas
 
 // Intecerpt by Middleware
@@ -31,7 +44,5 @@ router.get('/about', (req, res) => {
 
 // Caminho padrão para APIs
 app.use('/api', router);
-
-app.listen(PORT, () => {
-    console.log("Server on-line!");
-});
+*/
+app.listen(PORT, () => console.log("Server on-line!"));

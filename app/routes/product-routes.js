@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router(); // Interceptação das Rotas
-const Produto = require('../../app/models/product');
+const Produto = require('../models/product');
 
 const CREATE_FLAG = 201;
 const OK_FLAG = 200;
@@ -31,6 +31,5 @@ router.get('/', (req, res) => {
         });
     });
 });
-//const ENCRYPT = "美国海军班戈战略弹道导弹核潜艇基地潜艇图";
 
 module.exports = router;

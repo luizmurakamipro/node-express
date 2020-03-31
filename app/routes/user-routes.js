@@ -35,19 +35,18 @@ router.get('/', (req, res) => {
     });
 });
 
-
-router.post('/:userId/addproducts', async (req, res) => { 
-    const { userId } = req.params;
-    const novoProduto = new Produto(req.body);
+router.post('/:userId/:productId', async (req, res) => { 
+    const { userId, productId } = req.params;
+    const produto = await Produto.findById(productId);
     const usuario = await Usuario.findById(userId);
 
-    novoProduto.comprador = usuario;
-    novoProduto.save(error => {
+    produto.comprador = usuario;
+    produto.save(error => {
         if (error)
             res.status(BADREQUEST_FLAG).send({message: "Erro ao salvar produto com usuario inserido"});
     });
 
-    usuario.produtos.push(novoProduto);
+    usuario.produtos.push(produto);
     usuario.save(error => {
         if (error)
             res.status(BADREQUEST_FLAG).send({message: "Erro ao inserir produto no usuario"});

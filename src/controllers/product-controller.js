@@ -1,25 +1,24 @@
-const express = require('express');
-const router = express.Router(); // Interceptação das Rotas
-const Produto = require('../models/product');
+const Produto = require('../app/models/product');
 
 const CREATE_FLAG = 201;
 const OK_FLAG = 200;
+const BADREQUEST_FLAG = 400;
 
-router.post('/', (req, res) => {
-        var produto = new Produto();
-        produto.nome = req.body.nome;
-        produto.preco = req.body.preco;
-        produto.descricao = req.body.descricao;
+exports.post = (req, res) => {
+    var produto = new Produto();
+    produto.nome = req.body.nome;
+    produto.preco = req.body.preco;
+    produto.descricao = req.body.descricao;
 
-        produto.save(error => {
-            if (error)
-                res.send("Erro ao tentar salvar um produto " + error);
+    produto.save(error => {
+        if (error)
+            res.send("Erro ao tentar salvar um produto " + error);
             
-            res.status(CREATE_FLAG).json({message: "Produto inserido com sucesso"});
-        });
+        res.status(CREATE_FLAG).json({message: "Produto inserido com sucesso"});
     });
+}
 
-router.get('/', (req, res) => {
+exports.get = (req, res) => {
     Produto.find((err, prods) => {
         if (err)
             res.send(err);
@@ -29,9 +28,9 @@ router.get('/', (req, res) => {
             produtos: prods
         });
     });
-});
+}
 
-router.get("/:productId", (req, res) => {
+exports.getById = (req, res) => {
     const id = req.params.productId;
 
     Produto.findById(id, (err, prod) => {
@@ -48,9 +47,9 @@ router.get("/:productId", (req, res) => {
             });
         }
     });
-});
+}
 
-router.put("/:productId",  (req, res) => {
+exports.put = (req, res) => {
     const id = req.params.productId;
 
     Produto.findById(id, (err, produto) => {
@@ -73,19 +72,19 @@ router.put("/:productId",  (req, res) => {
             });
         }
     });
-});
+}
 
-router.delete("/:productId", (req, res) => {
-    Produto.findByIdAndRemove(req.params.productId, (err, produto) => {
+exports.delete = async (req, res) => {
+    const { productId } = req.params;
+
+    await Produto.findByIdAndRemove(productId, (err, produto) => {
         if(err) 
             return res.status(500).send(err);
 
         const response = {
-            message:"produto removido com sucesso",
-            id: produto.id
+            message:"Produto removido com sucesso",
+            id: productId
         }; 
         return res.status(OK_FLAG).send(response);
     });
-});
-
-module.exports = router;
+}

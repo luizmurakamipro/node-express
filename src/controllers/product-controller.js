@@ -1,6 +1,5 @@
-const Produto = require('../app/models/product');
 const repository = require('../repositories/product-repository');
-const Flag = require('../configs/flag-config.js');
+const mongoose = require('mongoose');
 
 exports.post = async (req, res) => {
     try {
@@ -14,7 +13,7 @@ exports.post = async (req, res) => {
         });
     } catch (err) {
         res.status(500).send({
-            message: "Falha ao tentar inserir produto",
+            message: "Erro ao tentar inserir produto",
             error: err
         });
     }
@@ -23,7 +22,10 @@ exports.post = async (req, res) => {
 exports.get = async (req, res) => {
    try {
        var data = await repository.get();
-       res.status(200).send(data);
+       res.status(200).send({
+           data: data,
+           count: data.length
+        });
    } catch (err) {
        res.status(500).send({
            message: "Falha na requisição",
@@ -34,9 +36,13 @@ exports.get = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-       const { productId } = req.params;
-       var data = await repository.getById(productId);
-       res.status(200).send(data);
+        const { productId } = req.params;
+        var data = await repository.getById(productId);
+
+        if (data == null)
+            res.status(500).send({message: "Produto não encontrado"});
+        else
+            res.status(200).send(data);
    } catch (err) {
        res.status(500).send({
            message: "Falha na requisição",
@@ -66,13 +72,13 @@ exports.delete = async (req, res) => {
         const { productId } = req.params;
 
         await repository.delete(productId);
-        
+
         res.status(201).send({
             message: "Produto deletado com sucesso"
         });
     } catch (err) {
         res.status(500).send({
-            message: "Falha ao tentar deletar produto",
+            message: "Erro ao tentar deletar produto",
             error: err
         });
     }

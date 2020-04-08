@@ -1,110 +1,93 @@
-const Usuario = require('../app/models/user');
-const Produto = require('../app/models/product');
 
-// Inserir usuario.
-exports.post = (req, res) => {
-    var usuario = new Usuario();
+const repository = require('../repositories/user-respository'); 
 
-    usuario.name = req.body.name;
-    usuario.email = req.body.email;
-    usuario.password = req.body.password;
-
-    usuario.save(error => {
-        if (error)
-            res.status(400).send({error: "Erro ao tentar salvar usuario"});
-                
-        res.status(201).send({message: "Usuario inserido com sucesso"});
-    });
-}
-
-// Listar usuarios inseridos
-exports.get = (req, res) => {
-    Usuario.find((err, users) => {
-        if (err)
-            res.send(err);
-
-        res.status(200).json({
-            message:"Usuarios encontrados!",
-            usuarios: users
+exports.post = async (req, res) => {
+    try {
+        await repository.post({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
         });
-    });
+        res.status(201).send({
+            message: "Usuário inserido com sucesso"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "Erro ao tentar inserir usuário",
+            error: err
+        });
+    }
 }
 
-exports.getById = (req, res) => {
-    const id = req.params.userId;
-
-    Usuario.findById(id, (err, user) => {
-        if (err) {
-            res.status(500).json({message: "Erro ao tentar encontrar usuário"});
-        }
-        else if (user == null) {
-            res.status(400).json({message: "Usuário não encontrado"});
-        }
-        else {
-            res.status(200).json({
-                message: "Usuário encontrado com sucesso",
-                usuario: user
-            });
-        }
-    });
+exports.get = async (req, res) => {
+   try {
+       var data = await repository.get();
+       res.status(200).send(data);
+   } catch (err) {
+       res.status(500).send({
+           message: "Falha na requisição",
+           error: err
+       });
+   }
 }
 
-exports.put = (req, res) => {
-    const id = req.params.userId;
+exports.getById = async (req, res) => {
+    try {
+       const { userId } = req.params;
+       var data = await repository.getById(userId);
+       res.status(200).send(data);
+   } catch (err) {
+       res.status(500).send({
+           message: "Falha na requisição",
+           error: err
+       });
+   }
+}
 
-    Usuario.findById(id, (err, user) => {
-        if (err) {
-            res.status(500).json({message: "Erro ao tentar encontrar o usuário"});
-        }
-        else if (user == null) {
-            res.status(400).json({message: "Usuário não encontrado"});
-        }
-        else {
-            user.name = req.body.name;
-            user.email = req.body.email;
-            user.password = req.body.password;
-
-            user.save(error => {
-                if(error)
-                    res.send("Erro ao tentar atualizar um usuário" + error);
-                
-                res.status(200).json({message:"Usuário atualizado com sucesso"});
-            });
-        }
-    });
+exports.put = async (req, res) => {
+    try {
+        const { userId } = req.params;;
+        var data = await repository.put(userId, req.body);
+        res.status(200).send({
+            message: "Usuário atualizado com sucesso",
+            dados: data
+        });
+    } catch (err) {
+        res.status(400).send({
+            message: "Erro ao tentar atualizar usuário",
+            error: err
+        });
+    }
 }
 
 exports.delete = async (req, res) => {
-    const { userId } = req.params;
-
-    await Usuario.findByIdAndRemove(userId, (err, user) => {
-        if(err) 
-            return res.status(500).send(err);
-
-        const response = {
-            message:"Usuário removido com sucesso",
-            id: userId
-        }; 
-        return res.status(200).send(response);
-    });
+    try {
+        const { userId } = req.params;
+        await repository.delete(userId);  
+        res.status(200).send({
+            message: "Usuário deletado com sucesso"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "Erro ao tentar deletar usuário",
+            error: err
+        });
+    }
 }
 
 exports.putProduct = async (req, res) => { 
-    const { userId, productId } = req.params;
-    const produto = await Produto.findById(productId);
-    const usuario = await Usuario.findById(userId);
-
-    produto.comprador = usuario;
-    produto.save(error => {
-        if (error)
-            res.status(400).send({message: "Erro ao salvar produto com usuario inserido"});
-    });
-
-    usuario.produtos.push(produto);
-    usuario.save(error => {
-        if (error)
-            res.status(400).send({message: "Erro ao inserir produto no usuario"});
-
-        res.status(201).send({message: "Produto inserido no usuario com sucesso"});
-    });
+    try {
+        const { userId, productId } = req.params;
+        var [ userData, productData ] = await repository.putProduct(userId, productId);
+        res.status(200).send({
+            message: "Produto inserido no usuário com sucesso",
+            user: userData,
+            product: productData
+        });
+    } catch (err) {
+        res.status(400).send({
+            message: "Erro ao inserir produto no usuario",
+            error: err
+        });
+    }
 }

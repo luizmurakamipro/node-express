@@ -1,5 +1,4 @@
 const Product = require('../app/models/product');
-const mongoose = require('mongoose');
 
 // GetAll
 exports.get = async () => {
@@ -16,6 +15,9 @@ exports.getById = async (id) => {
 // Post
 exports.post = async (data) => {
     const product = new Product(data);
+
+    /* Salvar um Log com data em outro banco de dados ou em array */
+
     await product.save();
 }
 

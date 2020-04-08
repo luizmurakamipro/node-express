@@ -1,90 +1,79 @@
 const Produto = require('../app/models/product');
+const repository = require('../repositories/product-repository');
+const Flag = require('../configs/flag-config.js');
 
-const CREATE_FLAG = 201;
-const OK_FLAG = 200;
-const BADREQUEST_FLAG = 400;
-
-exports.post = (req, res) => {
-    var produto = new Produto();
-    produto.nome = req.body.nome;
-    produto.preco = req.body.preco;
-    produto.descricao = req.body.descricao;
-
-    produto.save(error => {
-        if (error)
-            res.send("Erro ao tentar salvar um produto " + error);
-            
-        res.status(CREATE_FLAG).json({message: "Produto inserido com sucesso"});
-    });
-}
-
-exports.get = (req, res) => {
-    Produto.find((err, prods) => {
-        if (err)
-            res.send(err);
-
-        res.status(OK_FLAG).json({
-            message:"Produtos encontrados!",
-            produtos: prods
+exports.post = async (req, res) => {
+    try {
+        await repository.post({
+            nome: req.body.nome,
+            preco: req.body.preco,
+            descricao: req.body.descricao
         });
-    });
+        res.status(201).send({
+            message: "Produto inserido com sucesso"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "Falha ao tentar inserir produto",
+            error: err
+        });
+    }
 }
 
-exports.getById = (req, res) => {
-    const id = req.params.productId;
-
-    Produto.findById(id, (err, prod) => {
-        if (err) {
-            res.status(500).json({message: "Erro ao tentar encontrar produto"});
-        }
-        else if (prod == null) {
-            res.status(400).json({message: "Produto não encontrado"});
-        }
-        else {
-            res.status(OK_FLAG).json({
-                message: "Produto encontrado com sucesso",
-                produto: prod
-            });
-        }
-    });
+exports.get = async (req, res) => {
+   try {
+       var data = await repository.get();
+       res.status(200).send(data);
+   } catch (err) {
+       res.status(500).send({
+           message: "Falha na requisição",
+           error: err
+       });
+   }
 }
 
-exports.put = (req, res) => {
-    const id = req.params.productId;
+exports.getById = async (req, res) => {
+    try {
+       const { productId } = req.params;
+       var data = await repository.getById(productId);
+       res.status(200).send(data);
+   } catch (err) {
+       res.status(500).send({
+           message: "Falha na requisição",
+           error: err
+       });
+   }
+}
 
-    Produto.findById(id, (err, produto) => {
-        if (err) {
-            res.status(500).json({message: "Erro ao tentar encontrar o produto"});
-        }
-        else if (produto == null) {
-            res.status(400).json({message: "Produto não encontrado"});
-        }
-        else {
-            produto.nome = req.body.nome;
-            produto.preco = req.body.preco;
-            produto.descricao = req.body.descricao;
-
-            produto.save(error => {
-                if(error)
-                    res.send("Erro ao tentar atualizar um produto" + error);
-                
-                res.status(OK_FLAG).json({message:"Produto atualizado com sucesso"});
-            });
-        }
-    });
+exports.put = async (req, res) => {
+    try {
+        const { productId } = req.params;;
+        var data = await repository.put(productId, req.body);
+        res.status(200).send({
+            message: "Produto atualizado com sucesso",
+            dados: data
+        });
+    } catch (err) {
+        res.status(400).send({
+            message: "Erro ao tentar atualizar produto",
+            error: err
+        });
+    }
 }
 
 exports.delete = async (req, res) => {
-    const { productId } = req.params;
+    try {
+        const { productId } = req.params;
 
-    await Produto.findByIdAndRemove(productId, (err, produto) => {
-        if(err) 
-            return res.status(500).send(err);
-
-        const response = {
-            message:"Produto removido com sucesso",
-            id: productId
-        }; 
-        return res.status(OK_FLAG).send(response);
-    });
+        await repository.delete(productId);
+        
+        res.status(201).send({
+            message: "Produto deletado com sucesso"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "Falha ao tentar deletar produto",
+            error: err
+        });
+    }
 }

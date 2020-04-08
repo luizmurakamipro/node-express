@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Persistência
-mongoose.connect('mongodb+srv://luizmurakami:luiz@murakami@cluster0-usoip.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser:true, useCreateIndex:true, useUnifiedTopology:true});
+mongoose.connect('mongodb+srv://luizmurakami:luiz@murakami@cluster0-usoip.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser:true, useCreateIndex:true, useUnifiedTopology:true, useFindAndModify:true});
 
 // Configurar a aplicação para usar o Body-Parser
 app.use(bodyParser.urlencoded([{extended:true}]));

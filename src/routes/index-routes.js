@@ -1,12 +1,14 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/user-middleware');
 const router = express.Router();
 
 router.use((req, res, next) => {
-    // Aqui será implementado rotinas de Logs, Validações, Autenticações...
-    console.log("Intercept by Middleware");
+    console.log("Intercepted!");
     next();
 });
 
-router.get('/', (req, res) => res.json({message: "Intercepted!"}));
+router.get('/', (req, res) => res.json({
+    message: "OK",
+}));
 
 module.exports = router;

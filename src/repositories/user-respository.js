@@ -48,3 +48,18 @@ exports.putProduct = async (uId, pId) => {
 
     return [ user, product ];
 }
+
+exports.authenticate = async (eml, pwd) => {
+    const user = await User.findOne(eml);
+
+    if (!user)
+        return false;
+
+    if (user.email !== eml)
+        return false;
+
+    if (user.password !== pwd)
+        return false;
+
+    return user;
+}

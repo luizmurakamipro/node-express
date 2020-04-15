@@ -1,4 +1,3 @@
-
 const repository = require('../repositories/user-respository'); 
 
 exports.post = async (req, res) => {
@@ -87,6 +86,23 @@ exports.putProduct = async (req, res) => {
     } catch (err) {
         res.status(400).send({
             message: "Erro ao inserir produto no usuario",
+            error: err
+        });
+    }
+}
+
+exports.authenticate = async (req, res) => { 
+    try {
+        const { email, password } = req.body;
+
+        var ret = await repository.authenticate(email, password);
+
+        if (ret == false)
+            
+
+    } catch (err) {
+        res.status(400).send({
+            message: "Erro ao tentar autenticar usuário",
             error: err
         });
     }

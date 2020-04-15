@@ -23,4 +23,7 @@ router.delete('/:userId', userController.delete);
 // Set Product in User
 router.post('/:userId/:productId', userController.putProduct);
 
+// Authenticate
+router.post('/authenticate', userController.authenticate);
+
 module.exports = router;

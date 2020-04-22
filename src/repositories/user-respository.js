@@ -49,17 +49,22 @@ exports.putProduct = async (uId, pId) => {
     return [ user, product ];
 }
 
-exports.authenticate = async (eml, pwd) => {
-    const user = await User.findOne(eml);
-
+exports.authenticate = async (email, password) => {
+    const user = await User.findOne({ email });
     if (!user)
-        return false;
-
-    if (user.email !== eml)
-        return false;
-
-    if (user.password !== pwd)
-        return false;
-
+    {
+        console.log('Não encontrado');
+        return null;
+    }
+    if (user.email !== email)
+    {     
+         console.log('email errado');
+        return null;
+    }
+    if (user.password !== password)
+    {
+         console.log('senha errada');
+        return null;
+    }
     return user;
 }

@@ -8,7 +8,7 @@ const app = express();
 mongoose.connect('mongodb+srv://luizmurakami:luiz@murakami@cluster0-usoip.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser:true, useCreateIndex:true, useUnifiedTopology:true, useFindAndModify:true});
 
 // Configurar a aplicação para usar o Body-Parser
-app.use(bodyParser.urlencoded([{extended:true}]));
+app.use(bodyParser.urlencoded([{extended:false}]));
 app.use(bodyParser.json());
 
 // Porta da aplicação
@@ -28,25 +28,4 @@ app.use('/api/products', productRoute);
 // Rota para Index
 app.use('/api', indexRoute);
 
-/*// Definindo as rotas
-const router = express.Router(); // Interceptar todas as rotas
-
-// Intecerpt by Middleware
-router.use((req, res, next) => {
-    console.log("Intercept by Middleware");
-    next(); // Continua para próxima API
-});
-
-// Rota padrão
-router.get('/', (req, res) => {
-    res.json({"message":"Route test OK"});
-});
-
-router.get('/about', (req, res) => {
-    res.json({"message":"About test OK!"});
-});
-
-// Caminho padrão para APIs
-app.use('/api', router);
-*/
 app.listen(PORT, () => console.log("Server on-line!"));

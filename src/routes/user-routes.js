@@ -3,7 +3,7 @@ const router = express.Router(); // Interceptação das Rotas
 const userController = require('../controllers/user-controller');
 const userMiddleware = require('../middlewares/user-middleware');
 
-//router.use(userMiddleware);
+router.use(userMiddleware);
 
 // Post
 router.post('/', userController.post);

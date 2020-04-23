@@ -1,13 +1,12 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router();
+const authController = require('../controllers/auth-controller');
+const authMiddleware = require('../middlewares/auth-middleware');
 
-/*router.use((req, res, next) => {
-    console.log("Intercepted!");
-    next();
-});*/
+router.use(authMiddleware);
 
-router.get('/', (req, res) => res.json({
-    message: "OK",
-}));
+// Authenticate
+router.post('/authenticate', authController.authenticate);
 
 module.exports = router;

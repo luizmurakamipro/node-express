@@ -19,13 +19,13 @@ var productRoute = require('./routes/product-routes');
 var userRoute = require('./routes/user-routes');
 var indexRoute = require('./routes/index-routes');
 
+// Rota para Index
+app.use('/api', indexRoute);
+
 // Rotas para Usuarios
 app.use('/api/users', userRoute);
 
 // Rotas para Produtos
 app.use('/api/products', productRoute);
-
-// Rota para Index
-app.use('/api', indexRoute);
 
 app.listen(PORT, () => console.log("Server on-line!"));

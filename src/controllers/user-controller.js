@@ -1,42 +1,4 @@
 const repository = require('../repositories/user-respository'); 
-const fs = require('fs');
-function sendUserLog(req)
-{
-    try {
-        var today = new Date();
-        var log = "auth-" + today.toISOString().substring(0, 10) + ".json";
-        var time = (today.getUTCHours() + 21) + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-        fs.readFile(log, (err, data) => {
-            if (err) {
-                var dados = [];
-                dados.push({hour: time, method: req.method, params: req.params, body: req.body});
-                fs.writeFile(log, JSON.stringify(dados), error => {
-                    if (error)
-                        console.log(error);
-                    else
-                        console.log("Success to save new file!");
-                });
-            }
-            else {
-                var dados = JSON.parse(data);
-                dados.push({hour: time, method: req.method, params: req.params, body: req.body});
-                fs.writeFile(log, JSON.stringify(dados), error => {
-                    if (error)
-                        console.log(error);
-                    else
-                        console.log("Success to save file!");
-                }); 
-            }
-        });
-    } catch (error) {
-        /*res.status(400).send({
-            message: "Erro ao tentar registrar JSON",
-            error: error
-        });*/
-        console.log(error);
-    }
-}
 
 exports.post = async (req, res) => {
     try {
@@ -124,25 +86,6 @@ exports.putProduct = async (req, res) => {
     } catch (err) {
         res.status(400).send({
             message: "Erro ao inserir produto no usuario",
-            error: err
-        });
-    }
-}
-
-exports.authenticate = async (req, res) => { 
-    try {
-        const { email, password } = req.body;
-        console.log(email + " " + password);
-        var user = await repository.authenticate(email, password);
-        if (!user)
-            res.status(400).send({message: "Erro ao tentar autenticar usuário"});
-        else
-            res.status(200).send({message: "Login realizado com sucesso", user:user});
-
-        sendUserLog(req);
-    } catch (err) {
-        res.status(400).send({
-            message: "Erro ao tentar autenticar usuário",
             error: err
         });
     }

@@ -13,12 +13,6 @@ exports.getById = async (id) => {
     return res;
 }
 
-// Post
-exports.post = async (data) => {
-    const user = new User(data);
-    await user.save();
-}
-
 // Put
 exports.put = async (id, data) => {
     const res = await User.findByIdAndUpdate(id, {
@@ -47,24 +41,4 @@ exports.putProduct = async (uId, pId) => {
     await user.save();
 
     return [ user, product ];
-}
-
-exports.authenticate = async (email, password) => {
-    const user = await User.findOne({ email });
-    if (!user)
-    {
-        console.log('Não encontrado');
-        return null;
-    }
-    if (user.email !== email)
-    {     
-         console.log('email errado');
-        return null;
-    }
-    if (user.password !== password)
-    {
-         console.log('senha errada');
-        return null;
-    }
-    return user;
 }

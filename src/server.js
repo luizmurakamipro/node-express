@@ -15,9 +15,9 @@ app.use(bodyParser.json());
 const PORT = process.env.port || 3000;
 
 // Rotas
-var productRoute = require('./routes/product-routes');
-var userRoute = require('./routes/user-routes');
-var indexRoute = require('./routes/index-routes');
+var productRoute = require('./routes/product-route');
+var userRoute = require('./routes/user-route');
+var indexRoute = require('./routes/index-route');
 
 // Rota para Index
 app.use('/api', indexRoute);

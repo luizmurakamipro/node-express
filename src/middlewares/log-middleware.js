@@ -9,12 +9,12 @@ module.exports = (req, res, next) => {
 
     fs.readFile(log, (err, data) => {
         if (err) {
-            dados.push({hour: time, method: req.method, params: req.params, body: req.body});
+            dados.push({hour: time, url: req.url, method: req.method, params: req.params, body: req.body});
             fs.writeFile(log, JSON.stringify(dados, null, 4), error => {
                 if (error)
                     console.log(error);
                 else
-                    console.log("Success to save new file!");
+                    console.log("Success to save new file " + time);
 
                 return next();
             });
@@ -26,7 +26,7 @@ module.exports = (req, res, next) => {
                 if (error)
                     console.log(error);
                 else
-                    console.log("Success to save file!");
+                    console.log("Success to save file " + time);
 
                 return next();
             });

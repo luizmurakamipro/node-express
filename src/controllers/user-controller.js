@@ -1,23 +1,5 @@
 const repository = require('../repositories/user-respository'); 
 
-exports.post = async (req, res) => {
-    try {
-        await repository.post({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
-        res.status(201).send({
-            message: "Usuário inserido com sucesso"
-        });
-    } catch (err) {
-        res.status(500).send({
-            message: "Erro ao tentar inserir usuário",
-            error: err
-        });
-    }
-}
-
 exports.get = async (req, res) => {
    try {
        var data = await repository.get();

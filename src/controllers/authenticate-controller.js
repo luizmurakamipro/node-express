@@ -1,4 +1,4 @@
-const repository = require('../repositories/user-respository');
+const repository = require('../repositories/authenticate-repository');
 
 exports.authenticate = async (req, res) => { 
     try {

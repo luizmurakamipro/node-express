@@ -3,7 +3,10 @@ const repository = require('../repositories/user-respository');
 exports.get = async (req, res) => {
    try {
        var data = await repository.get();
-       res.status(200).send(data);
+       res.status(200).send({
+            users: data,
+            count: data.length
+        });
    } catch (err) {
        res.status(500).send({
            message: "Falha na requisição",

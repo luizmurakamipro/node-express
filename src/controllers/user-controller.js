@@ -3,6 +3,7 @@ const repository = require('../repositories/user-respository');
 exports.get = async (req, res) => {
    try {
        var data = await repository.get();
+       //data.map(password => { password = undefined; });
        res.status(200).send({
             users: data,
             count: data.length
@@ -19,6 +20,7 @@ exports.getById = async (req, res) => {
     try {
        const { userId } = req.params;
        var data = await repository.getById(userId);
+       data.password = undefined;
        res.status(200).send(data);
    } catch (err) {
        res.status(500).send({

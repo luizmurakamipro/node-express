@@ -7,7 +7,10 @@ exports.authenticate = async (req, res) => {
         if (!user)
             res.status(400).send({message: "Email ou senha incorretos"});
         else
+        {
+            user.password = undefined;
             res.status(200).send({message: "Login realizado com sucesso", user:user});
+        }
     } catch (err) {
         res.status(400).send({
             message: "Erro ao tentar autenticar usuário",

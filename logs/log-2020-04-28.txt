@@ -1,0 +1,102 @@
+[
+    {
+        "hour": "22:18:25",
+        "url": "/users",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:19:02",
+        "url": "/users",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:19:08",
+        "url": "/users",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:21:03",
+        "url": "/users/5ea8bd78f719da3aeb5dbc8b",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:22:42",
+        "url": "/users/",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:22:53",
+        "url": "/users/",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:22:57",
+        "url": "/users/",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:23:27",
+        "url": "/authenticate",
+        "method": "POST",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:23:34",
+        "url": "/authenticate",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    },
+    {
+        "hour": "22:23:40",
+        "url": "/users",
+        "method": "GET",
+        "params": {},
+        "body": {
+            "email": "murakami123@hotmail.com",
+            "password": "1234"
+        }
+    }
+]

@@ -16,7 +16,8 @@ var userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        default: ''
+        default: '',
+        select: false
     },
     produtos: [{
         type: mongoose.Schema.Types.ObjectId,

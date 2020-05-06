@@ -3,18 +3,12 @@ const repository = require('../repositories/authenticate-repository');
 exports.authenticate = async (req, res) => { 
     try {
         const { email, password } = req.body;
-        var user = await repository.authenticate(email, password);
-        if (!user)
-            res.status(400).send({message: "Email ou senha incorretos"});
-        else
-        {
-            user.password = undefined;
-            res.status(200).send({message: "Login realizado com sucesso", user:user});
-        }
+        var rt = await repository.authenticate(email, password);
+        res.status(200).send({auth: true, token: rt});
     } catch (err) {
-        res.status(400).send({
-            message: "Erro ao tentar autenticar usuário",
-            error: err
-        });
+        if (!err.status)
+            res.status(500).json({error: { code: 'UNKNOW_ERROR', message: 'An unknown error occurred.' }});
+        else
+            res.status(err.status).json({error: { code: err.code, message: err.message }});
     }
 }

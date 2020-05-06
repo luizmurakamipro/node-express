@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router(); // Interceptação das Rotas
 const productController = require('../controllers/product-controller');
+const security = require('../services/authenticate-service');
+
+router.use(security.authorize);
 
 // Post - Create
 router.post("/", productController.post);
